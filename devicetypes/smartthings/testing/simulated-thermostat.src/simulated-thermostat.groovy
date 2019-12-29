@@ -703,45 +703,45 @@ private evaluateOperatingState(Map overrides) {
 //
 // Methods to "run" the heating/air conditioning. This baby heats or  cools at about a degree every 15 seconds.
 //
-private startSimHvac() {
-    String operatingState = getOperatingState()
-    Boolean isRunning = state?.isHvacRunning?:false
-    Boolean shouldBeRunning = (operatingState in RUNNING_OP_STATES)
-    log.trace "Executing 'startSimHvac' - isRunning: $isRunning, shouldBeRunning: $shouldBeRunning, op: $operatingState"
-
-    if (!isRunning && shouldBeRunning) {
-        log.info "START HVAC / starting simulated hvac run"
-        state.isHvacRunning = true
-        runIn(SIM_HVAC_CYCLE_SECONDS, "runSimHvacCycle")
-    } else if (isRunning) {
-        log.trace "simulated hvac is already running"
-    } else if (!shouldBeRunning) {
-        log.trace "simulated hvac does not need to run now"
-    }
-}
-
-def runSimHvacCycle() {
-    def operatingState = getOperatingState()
-    def currentTemp = getTemperature()
-    def heatSet = getHeatingSetpoint()
-    def coolSet = getCoolingSetpoint()
-    log.trace "Executing 'runSimHvacCycle' - op: $operatingState, current: $currentTemp, heat set: $heatSet, cool set: $coolSet"
-
-    if (operatingState == OP_STATE.HEATING && heatSet - currentTemp >= THRESHOLD_DEGREES) {
-        log.info "RUN HVAC / room temp +1 degree"
-        tempUp()
-        runIn(SIM_HVAC_CYCLE_SECONDS, "runSimHvacCycle")
-    } else if (operatingState == OP_STATE.COOLING && currentTemp - coolSet >= THRESHOLD_DEGREES) {
-        log.info "RUN HVAC / room temp -1 degree"
-        tempDown()
-        runIn(SIM_HVAC_CYCLE_SECONDS, "runSimHvacCycle")
-    } else {
-        // end the job
-        evaluateOperatingState()
-        state.isHvacRunning = false
-        log.info "END HVAC / simulated hvac run has concluded"
-    }
-}
+// private startSimHvac() {
+//    String operatingState = getOperatingState()
+//    Boolean isRunning = state?.isHvacRunning?:false
+//    Boolean shouldBeRunning = (operatingState in RUNNING_OP_STATES)
+//    log.trace "Executing 'startSimHvac' - isRunning: $isRunning, shouldBeRunning: $shouldBeRunning, op: $operatingState"
+//
+//    if (!isRunning && shouldBeRunning) {
+//        log.info "START HVAC / starting simulated hvac run"
+//        state.isHvacRunning = true
+//        runIn(SIM_HVAC_CYCLE_SECONDS, "runSimHvacCycle")
+//    } else if (isRunning) {
+//        log.trace "simulated hvac is already running"
+//    } else if (!shouldBeRunning) {
+//        log.trace "simulated hvac does not need to run now"
+//    }
+//}
+//
+//def runSimHvacCycle() {
+//    def operatingState = getOperatingState()
+//    def currentTemp = getTemperature()
+//    def heatSet = getHeatingSetpoint()
+//    def coolSet = getCoolingSetpoint()
+//    log.trace "Executing 'runSimHvacCycle' - op: $operatingState, current: $currentTemp, heat set: $heatSet, cool set: $coolSet"
+//
+//    if (operatingState == OP_STATE.HEATING && heatSet - currentTemp >= THRESHOLD_DEGREES) {
+//       log.info "RUN HVAC / room temp +1 degree"
+//        tempUp()
+//        runIn(SIM_HVAC_CYCLE_SECONDS, "runSimHvacCycle")
+//    } else if (operatingState == OP_STATE.COOLING && currentTemp - coolSet >= THRESHOLD_DEGREES) {
+//       log.info "RUN HVAC / room temp -1 degree"
+//        tempDown()
+//        runIn(SIM_HVAC_CYCLE_SECONDS, "runSimHvacCycle")
+//    } else {
+//        // end the job
+//        evaluateOperatingState()
+//        state.isHvacRunning = false
+//        log.info "END HVAC / simulated hvac run has concluded"
+//   }
+// }
 
 /**
  * Just mark the end of the execution in the log
