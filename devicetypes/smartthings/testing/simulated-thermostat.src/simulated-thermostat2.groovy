@@ -693,11 +693,11 @@ private evaluateOperatingState(Map overrides) {
     else {
         sendEvent(name: "thermostatSetpoint", value: heatingSetpoint)
     }
-    if (isHeating || isCooling) {
-        startSimHvac() // we need to run the HVAC
-    } else {
-        setOperatingState(OP_STATE.IDLE)
-    }
+//    if (isHeating || isCooling) {
+//        startSimHvac() // we need to run the HVAC
+//    } else {
+//        setOperatingState(OP_STATE.IDLE)
+//    }
 }
 
 //
